@@ -92,7 +92,7 @@ int main(int argc, char *argv[])
 		err(-1, "pipe");
 	if (fcntl(pipefds[0], F_SETPIPE_SZ, SPLICE_MAX) < 0
 	 || fcntl(pipefds[1], F_SETPIPE_SZ, SPLICE_MAX) < 0)
-		fprintf(stderr, "F_SETPIPE_SZ(%llu) failed, using default. "
+		fprintf(stderr, "F_SETPIPE_SZ(%d) failed, using default. "
 			"Check /proc/sys/fs/pipe-max-size\n", SPLICE_MAX);
 
 	for (insize = st.st_size; insize; insize -= got) {
@@ -106,7 +106,7 @@ int main(int argc, char *argv[])
 		if (got < 0)
 			err(-1, "splice");
 		else if (!got || got != l)
-			errx(-1, "splice return: %lld, expected %lld", got, l);
+			errx(-1, "splice return: %zd, expected %zd", got, l);
 	}
 
 	fprintf(stdout, "Spliced %s(%s): ", alg, infile);
